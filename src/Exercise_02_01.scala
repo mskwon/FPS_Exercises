@@ -1,5 +1,5 @@
 object FibonacciExercise {
-  def fibonacci(n: Int): Int = {
+  def fib(n: Int): Int = {
     @annotation.tailrec
     def go(n: Int, prev: Int, curr: Int): Int =
       if (n <= 0) prev
@@ -10,7 +10,7 @@ object FibonacciExercise {
 
   private def formatFib(n: Int) = {
     val msg = "Fibonacci sequence member %d is %d."
-    msg.format(n, fibonacci(n))
+    msg.format(n, fib(n))
   }
 
   def main(args: Array[String]): Unit =
