@@ -1,9 +1,3 @@
-/*  The result of the case statement will be 3, because the first case that matches is:
-      Cons(x, Cons(y, Cons(3, Cons(4, _)))) => x + y
-
-    and so x = 1 and y = 2; x + y = 3
- */
-
 sealed trait List[+A]
 case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
@@ -24,6 +18,12 @@ object List {
     if (as.isEmpty) Nil
     else Cons(as.head, apply(as.tail: _*))
 
+  // Exercise 3.1
+  /*  The result of the case statement will be 3, because the first case that matches is:
+      Cons(x, Cons(y, Cons(3, Cons(4, _)))) => x + y
+
+    and so x = 1 and y = 2; x + y = 3
+ */
   def testMatch(): Int = {
     val x = List(1, 2, 3, 4, 5) match {
       case Cons(x, Cons(2, Cons(4, _))) => x
@@ -35,7 +35,26 @@ object List {
     x
   }
 
-  def main(args: Array[String]): Unit =
+  def ex_3_1(): Unit =
     println(testMatch())
+
+  // Exercise 3.2
+  def tail[A](as: List[A]): List[A] = as match {
+    case Nil => Nil
+    case Cons(_, Nil) => Nil
+    case Cons(_, tail) => tail
+  }
+
+  def ex_3_2(): Unit = {
+    val testList = List(1, 2, 3, 4, 5)
+    val testTail = tail(testList)
+    println(testTail.toString())
+  }
+
+  def main(args: Array[String]): Unit = {
+    //ex_3_1()
+    ex_3_2()
+  }
 }
+
 
