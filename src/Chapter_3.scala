@@ -51,9 +51,21 @@ object List {
     println(testTail.toString())
   }
 
+  // Exdrcise 3.3
+  def setHead[A](head: A, as: List[A]): List[A] = as match {
+    case Nil => Cons(head, Nil)
+    case Cons(_, tail) => Cons(head, tail)
+  }
+
+  def ex_3_3(): Unit = {
+    val testList = List(1, 2)
+    println(setHead(2, testList).toString())
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
-    ex_3_2()
+    //ex_3_2()
+    ex_3_3()
   }
 }
 
