@@ -63,10 +63,11 @@ object List {
   }
 
   // Exercise 3.4
-  def drop[A](l: List[A], n: Int): List[A] =
-    if (l == Nil) Nil
-    else if (n <= 0) l
-    else drop(tail(l), n-1)
+  def drop[A](l: List[A], n: Int): List[A] = l match {
+    case Nil => Nil
+    case Cons(_, t) if n > 0 => drop(t, n-1)
+    case _ => l
+  }
 
   def ex_3_4() : Unit = {
     val testList = List(1, 2, 3, 4, 5)
@@ -74,6 +75,17 @@ object List {
     println(drop(testList, 6).toString())
   }
 
+  // Exercise 3.5
+  def head[A](as: List[A]): A = as match{
+    case Nil => Nil
+    case Cons(head, _) => head
+  }
+
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] =
+    if (l == Nil) Nothing
+    else if (f(head(l))) dropWhile(tail(l), f)
+    else l.head
+  
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
