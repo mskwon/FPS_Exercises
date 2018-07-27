@@ -62,10 +62,23 @@ object List {
     println(setHead(2, testList).toString())
   }
 
+  // Exercise 3.4
+  def drop[A](l: List[A], n: Int): List[A] =
+    if (l == Nil) Nil
+    else if (n <= 0) l
+    else drop(tail(l), n-1)
+
+  def ex_3_4() : Unit = {
+    val testList = List(1, 2, 3, 4, 5)
+    println(drop(testList, 3).toString())
+    println(drop(testList, 6).toString())
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
-    ex_3_3()
+    //ex_3_3()
+    ex_3_4()
   }
 }
 
