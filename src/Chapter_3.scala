@@ -120,6 +120,18 @@ object List {
     println(foldRight(List(1,2,3), Nil: List[Int])(Cons(_,_)))
   }
 
+  // Exercise 3.9
+  def length[A](as: List[A]): Int = {
+    foldRight(as, 0)((_, y) => 1 + y)
+  }
+
+  def ex_3_9(): Unit = {
+    var testList = List(1, 2, 3, 4)
+    println(length(testList))
+  }
+
+  // Exercise 3.10
+  
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -127,7 +139,8 @@ object List {
     //ex_3_4()
     //ex_3_5()
     //ex_3_6()
-    ex_3_8()
+    //ex_3_8()
+    ex_3_9()
   }
 }
 
