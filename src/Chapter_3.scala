@@ -87,12 +87,28 @@ object List {
     println(dropWhile(testList, (x: Int) => x%2==0))
   }
 
+  // Exercise 3.6
+  /*  The method init cannot run in constant time because of the need to iterate through the linked list members until
+      the last member is found (via pattern matching).
+   */
+  def init[A](l: List[A]): List[A] = l match{
+    case Nil => Nil
+    case Cons(_, Nil) => Nil
+    case Cons(h, t) => Cons(h, init(t))
+  }
+
+  def ex_3_6(): Unit = {
+    val testList = List(1, 2, 3, 4)
+    println(init(testList))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
     //ex_3_3()
     //ex_3_4()
-    ex_3_5()
+    //ex_3_5()
+    ex_3_6()
   }
 }
 
