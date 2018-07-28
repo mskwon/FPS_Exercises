@@ -69,28 +69,30 @@ object List {
     case _ => l
   }
 
-  def ex_3_4() : Unit = {
+  def ex_3_4(): Unit = {
     val testList = List(1, 2, 3, 4, 5)
     println(drop(testList, 3).toString())
     println(drop(testList, 6).toString())
   }
 
   // Exercise 3.5
-  def head[A](as: List[A]): A = as match{
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match{
     case Nil => Nil
-    case Cons(head, _) => head
+    case Cons(h, t) if f(h) => dropWhile(t, f)
+    case _ => l
   }
 
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] =
-    if (l == Nil) Nothing
-    else if (f(head(l))) dropWhile(tail(l), f)
-    else l.head
-  
+  def ex_3_5(): Unit = {
+    val testList = List(2, 4, 1, 2, 3)
+    println(dropWhile(testList, (x: Int) => x%2==0))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
     //ex_3_3()
-    ex_3_4()
+    //ex_3_4()
+    ex_3_5()
   }
 }
 
