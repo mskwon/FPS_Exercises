@@ -102,6 +102,14 @@ object List {
     println(init(testList))
   }
 
+  // Exercise 3.7
+  /*  With the current way foldRight is implemented, it is not possible for product2 to short-circuit on encountering a
+      0 as there is nowhere for the short-circuiting logic to go. The short-circuiting could possibly be implemented
+      via additional function argument, such that foldRight would terminate earlier should the function return true.
+   */
+
+  
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
