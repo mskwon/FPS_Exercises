@@ -108,7 +108,17 @@ object List {
       via additional function argument, such that foldRight would terminate earlier should the function return true.
    */
 
-  
+  def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
+      case Nil => z
+      case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    }
+
+  // Exercise 3.8
+  /*  It appears that perhaps the List constructor has a foldRight-like implementation
+   */
+  def ex_3_8(): Unit = {
+    println(foldRight(List(1,2,3), Nil: List[Int])(Cons(_,_)))
+  }
 
   def main(args: Array[String]): Unit = {
     //ex_3_1()
@@ -116,7 +126,8 @@ object List {
     //ex_3_3()
     //ex_3_4()
     //ex_3_5()
-    ex_3_6()
+    //ex_3_6()
+    ex_3_8()
   }
 }
 
