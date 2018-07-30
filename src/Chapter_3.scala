@@ -131,7 +131,17 @@ object List {
   }
 
   // Exercise 3.10
-  
+  @annotation.tailrec
+  def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B): B = as match {
+    case Nil => z
+    case Cons(x, xs) => foldLeft(xs, f(z, x))(f)
+  }
+
+  def ex_3_10(): Unit = {
+    var testList = List(1, 2, 3, 4)
+    println(foldLeft(testList, 0)(_ + _))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -140,7 +150,8 @@ object List {
     //ex_3_5()
     //ex_3_6()
     //ex_3_8()
-    ex_3_9()
+    //ex_3_9()
+    ex_3_10()
   }
 }
 
