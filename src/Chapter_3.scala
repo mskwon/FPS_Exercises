@@ -142,6 +142,26 @@ object List {
     println(foldLeft(testList, 0)(_ + _))
   }
 
+  // Exercise 3.11
+  def sum_foldLeft(as: List[Int]): Int =
+    foldLeft(as, 0)(_ + _)
+
+  def product_foldLeft(as: List[Double]): Double =
+    foldLeft(as, 1.0)(_ * _)
+
+  def length_foldLeft(as: List[Int]): Int =
+    foldLeft(as, 0)((y, _) => 1 + y)
+
+  def ex_3_11(): Unit = {
+    var testList = List(1, 2, 3, 4)
+    var testList2 = List(1.0, 2.0, 3.0, 4.0)
+    println(testList)
+    println("The sum of the list is: %d".format(sum_foldLeft(testList)))
+    println("The product of the list is: %3f".format(product_foldLeft(testList2)))
+    println("The length of the list is: %d".format(length_foldLeft(testList)))
+  }
+
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -151,7 +171,8 @@ object List {
     //ex_3_6()
     //ex_3_8()
     //ex_3_9()
-    ex_3_10()
+    //ex_3_10()
+    ex_3_11()
   }
 }
 
