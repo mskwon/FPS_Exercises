@@ -191,6 +191,18 @@ object List {
     outputMessage("foldRight version 2", foldRight2(testList, 0)(_ - _))
   }
 
+  // Exercise 3.14
+  def append2[A](a1: List[A], a2: List[A]): List[A] =
+    foldRight(a1, a2)(Cons(_, _))
+
+  def ex_3_14(): Unit = {
+      var testList1 = List(1, 2, 3)
+      var testList2 = List(4, 5, 6)
+      println(append2(testList1, testList2))
+  }
+
+  
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -203,7 +215,8 @@ object List {
     //ex_3_10()
     //ex_3_11()
     //ex_3_12()
-    ex_3_13()
+    //ex_3_13()
+    ex_3_14()
   }
 }
 
