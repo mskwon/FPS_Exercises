@@ -171,6 +171,25 @@ object List {
   }
 
   // Exercise 3.13
+  def foldRight2[A,B](as: List[A], z: B)(f: (A, B) => B): B = {
+    def shiftedFunction(acc: B, node: A): B =
+      f(node, acc)
+
+    foldLeft(reverse(as), z)(shiftedFunction)
+  }
+
+  def ex_3_13(): Unit = {
+    def outputMessage(foldtype: String, result: Int): Unit = {
+      var msg = "The result of %s is %d"
+      println(msg.format(foldtype, result))
+    }
+
+    var testList = List(1,2,3,4)
+
+    outputMessage("foldLeft", foldLeft(testList, 0)(_ - _))
+    outputMessage("foldRight version 1", foldRight(testList, 0)(_ - _))
+    outputMessage("foldRight version 2", foldRight2(testList, 0)(_ - _))
+  }
 
   def main(args: Array[String]): Unit = {
     //ex_3_1()
@@ -183,7 +202,8 @@ object List {
     //ex_3_9()
     //ex_3_10()
     //ex_3_11()
-    ex_3_12()
+    //ex_3_12()
+    ex_3_13()
   }
 }
 
