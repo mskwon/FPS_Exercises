@@ -157,10 +157,20 @@ object List {
     var testList2 = List(1.0, 2.0, 3.0, 4.0)
     println(testList)
     println("The sum of the list is: %d".format(sum_foldLeft(testList)))
-    println("The product of the list is: %3f".format(product_foldLeft(testList2)))
+    println("The product of the list is: %f".format(product_foldLeft(testList2)))
     println("The length of the list is: %d".format(length_foldLeft(testList)))
   }
 
+  // Exercise 3.12
+  def reverse[A](as: List[A]): List[A] =
+    foldLeft(as, Nil: List[A])((xs, x) => Cons(x, xs))
+
+  def ex_3_12(): Unit = {
+    var testList = List(1, 2, 3)
+    println(reverse(testList))
+  }
+
+  // Exercise 3.13
 
   def main(args: Array[String]): Unit = {
     //ex_3_1()
@@ -172,7 +182,8 @@ object List {
     //ex_3_8()
     //ex_3_9()
     //ex_3_10()
-    ex_3_11()
+    //ex_3_11()
+    ex_3_12()
   }
 }
 
