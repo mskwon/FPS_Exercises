@@ -300,6 +300,25 @@ object List {
     println(addTogether(testListA, testListB))
   }
 
+  // Exercise 3.23
+  def zipWith[A](as: List[A], bs: List[A])(f: (A, A) => A): List[A] =
+    as match {
+      case Nil => bs match {
+        case Nil => Nil
+        case _ => bs
+      }
+      case Cons(x, xs) => bs match {
+        case Nil => Cons(x, xs)
+        case Cons(y, ys) => Cons(f(x, y), zipWith(xs, ys)(f))
+      }
+    }
+
+  def ex_3_23(): Unit = {
+    var testListA = List(1,2,3)
+    var testListB = List(10,10,10)
+    println(zipWith(testListA, testListB)((x, y) => x * y))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
