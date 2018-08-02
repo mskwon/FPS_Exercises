@@ -224,7 +224,15 @@ object List {
     var testList = List(1,2,3)
     println(addOne(testList))
   }
-  
+
+  // Exerise 3.17
+  def doubleToString(d: List[Double]): List[String] =
+    foldRight(d, Nil: List[String])((d, ss) => Cons(d.toString(), ss))
+
+  def ex_3_17(): Unit = {
+    var testList = List(1.0, 2.0, 3.0)
+    println(doubleToString(testList))
+  }
 
   def main(args: Array[String]): Unit = {
     //ex_3_1()
@@ -241,7 +249,8 @@ object List {
     //ex_3_13()
     //ex_3_14()
     //ex_3_15()
-    ex_3_16()
+    //ex_3_16()
+    ex_3_17()
   }
 }
 
