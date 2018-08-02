@@ -281,6 +281,25 @@ object List {
     println(filter2(testList)(x => x%2==0))
   }
 
+  // Exercise 3.22
+  def addTogether(la: List[Int], lb: List[Int]): List[Int] =
+    la match {
+      case Nil => lb match {
+        case Nil => Nil
+        case _ => lb
+      }
+      case Cons(x, xs) => lb match {
+        case Nil => la
+        case Cons(y, ys) => Cons(x + y, addTogether(xs, ys))
+      }
+  }
+
+  def ex_3_22(): Unit = {
+    var testListA = List(1,2,3)
+    var testListB = List(10,10,10,4)
+    println(addTogether(testListA, testListB))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -301,7 +320,9 @@ object List {
     //ex_3_18()
     //ex_3_19()
     //ex_3_20()
-    ex_3_21()
+    //ex_3_21()
+    //ex_3_22()
+    ex_3_23()
   }
 }
 
