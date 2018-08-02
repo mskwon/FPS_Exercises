@@ -234,6 +234,18 @@ object List {
     println(doubleToString(testList))
   }
 
+  // Exercise 3.18
+  def map[A,B](as: List[A])(f: A => B): List[B] =
+    as match {
+      case Nil => Nil
+      case Cons(x, xs) => Cons(f(x), map(xs)(f))
+  }
+
+  def ex_3_18(): Unit = {
+    var testList = List(1,2,3)
+    println(map(testList)(x => x+1))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -250,7 +262,8 @@ object List {
     //ex_3_14()
     //ex_3_15()
     //ex_3_16()
-    ex_3_17()
+    //ex_3_17()
+    ex_3_18()
   }
 }
 
