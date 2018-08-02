@@ -271,6 +271,16 @@ object List {
     println(flatMap(testList)(i => List(i,i)))
   }
 
+  // Exercise 3.21
+  def filter2[A](as: List[A])(f: A => Boolean): List[A] = {
+    flatMap(as)(x => if (f(x)) List(x) else Nil)
+  }
+
+  def ex_3_21(): Unit = {
+    var testList = List(1,2,3,4)
+    println(filter2(testList)(x => x%2==0))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -290,7 +300,8 @@ object List {
     //ex_3_17()
     //ex_3_18()
     //ex_3_19()
-    ex_3_20()
+    //ex_3_20()
+    ex_3_21()
   }
 }
 
