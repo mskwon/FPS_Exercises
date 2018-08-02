@@ -216,6 +216,16 @@ object List {
     println(flatten2D(testList))
   }
 
+  // Exercise 3.16
+  def addOne(l: List[Int]): List[Int] =
+    foldRight2(l, Nil: List[Int])((x, xs) => Cons(x+1, xs))
+
+  def ex_3_16(): Unit = {
+    var testList = List(1,2,3)
+    println(addOne(testList))
+  }
+  
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -230,7 +240,8 @@ object List {
     //ex_3_12()
     //ex_3_13()
     //ex_3_14()
-    ex_3_15()
+    //ex_3_15()
+    ex_3_16()
   }
 }
 
