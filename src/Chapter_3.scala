@@ -193,7 +193,7 @@ object List {
 
   // Exercise 3.14
   def append2[A](a1: List[A], a2: List[A]): List[A] =
-    foldRight(a1, a2)(Cons(_, _))
+    foldRight2(a1, a2)(Cons(_, _))
 
   def ex_3_14(): Unit = {
       var testList1 = List(1, 2, 3)
@@ -201,7 +201,20 @@ object List {
       println(append2(testList1, testList2))
   }
 
-  
+  // Exercise 3.15
+  def append[A](a1: List[A], a2: List[A]): List[A] =
+    a1 match {
+      case Nil => a2
+      case Cons(h,t) => Cons(h, append(t, a2))
+    }
+
+  def flatten2D[A](l: List[List[A]]): List[A] =
+    foldRight2(l, Nil: List[A])((list, flat) => foldRight2(list, flat)((x, xs) => Cons(x, xs)))
+
+  def ex_3_15(): Unit = {
+    var testList = List(List(1,2,3),List(4,5,6),List(7,8,9))
+    println(flatten2D(testList))
+  }
 
   def main(args: Array[String]): Unit = {
     //ex_3_1()
@@ -216,7 +229,8 @@ object List {
     //ex_3_11()
     //ex_3_12()
     //ex_3_13()
-    ex_3_14()
+    //ex_3_14()
+    ex_3_15()
   }
 }
 
