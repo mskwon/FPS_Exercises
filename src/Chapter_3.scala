@@ -246,6 +246,19 @@ object List {
     println(map(testList)(x => x+1))
   }
 
+  // Exercise 3.19
+  def filter[A](as: List[A])(f: A => Boolean): List[A] =
+    as match {
+      case Nil => Nil
+      case Cons(x, xs) if f(x) => Cons(x, filter(xs)(f))
+      case Cons(_, xs) => filter(xs)(f)
+    }
+
+  def ex_3_19(): Unit = {
+    var testList = List(1,2,3,4)
+    println(filter(testList)(x => x%2==0))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -263,7 +276,8 @@ object List {
     //ex_3_15()
     //ex_3_16()
     //ex_3_17()
-    ex_3_18()
+    //ex_3_18()
+    ex_3_19()
   }
 }
 
