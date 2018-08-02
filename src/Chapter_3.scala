@@ -259,6 +259,18 @@ object List {
     println(filter(testList)(x => x%2==0))
   }
 
+  // Exercise 3.20
+  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] =
+    as match {
+      case Nil => Nil
+      case Cons(x, xs) => append2(f(x),flatMap(xs)(f))
+    }
+
+  def ex_3_20(): Unit = {
+    var testList = List(1,2,3)
+    println(flatMap(testList)(i => List(i,i)))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -277,7 +289,8 @@ object List {
     //ex_3_16()
     //ex_3_17()
     //ex_3_18()
-    ex_3_19()
+    //ex_3_19()
+    ex_3_20()
   }
 }
 
