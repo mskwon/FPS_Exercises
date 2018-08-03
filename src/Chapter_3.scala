@@ -1,8 +1,8 @@
-sealed trait List[+A]
-case object Nil extends List[Nothing]
-case class Cons[+A](head: A, tail: List[A]) extends List[A]
+object Chapter_3 {
+  sealed trait List[+A]
+  case object Nil extends List[Nothing]
+  case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
-object List {
   def sum(ints: List[Int]): Int = ints match {
     case Nil => 0
     case Cons(x, xs) => x + sum(xs)
@@ -341,6 +341,22 @@ object List {
     println(hasSubsequence(testList, subListC))
   }
 
+  // Exercise 3.25
+  sealed trait Tree[+A]
+  case class Leaf[A](value: A) extends Tree[A]
+  case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
+
+  def size[A](root: Tree[A]): Int =
+    root match {
+      case Leaf(_) => 1
+      case Branch(l, r) => size(l) + size(r) + 1
+    }
+
+  def ex_3_25(): Unit = {
+    var testTree = Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))
+    println(size(testTree))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -364,7 +380,8 @@ object List {
     //ex_3_21()
     //ex_3_22()
     //ex_3_23()
-    ex_3_24()
+    //ex_3_24()
+    ex_3_25()
   }
 }
 
