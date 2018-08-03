@@ -319,6 +319,28 @@ object List {
     println(zipWith(testListA, testListB)((x, y) => x * y))
   }
 
+  // Exercise 3.24
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean =
+    sub match {
+      case Nil => true
+      case Cons(x, xs) => sup match {
+        case Nil => false
+        case Cons(y, ys) if x == y => hasSubsequence(ys, xs)||(hasSubsequence(ys, sub))
+        case Cons(_, ys) => hasSubsequence(ys, sub)
+      }
+    }
+
+  def ex_3_24(): Unit = {
+    var testList = List(1,2,2,3,4)
+    var subListA = List(1,1)
+    var subListB = List(2,3,4)
+    var subListC = List(1,2)
+
+    println(hasSubsequence(testList, subListA))
+    println(hasSubsequence(testList, subListB))
+    println(hasSubsequence(testList, subListC))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -341,7 +363,8 @@ object List {
     //ex_3_20()
     //ex_3_21()
     //ex_3_22()
-    ex_3_23()
+    //ex_3_23()
+    ex_3_24()
   }
 }
 
