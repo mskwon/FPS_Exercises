@@ -381,6 +381,18 @@ object List {
     println(depth(testTree))
   }
 
+  // Exercise 3.28
+  def mapTree[A,B](root: Tree[A])(f: A => B): Tree[B] =
+    root match {
+      case Leaf(x) => Leaf(f(x))
+      case Branch(l, r) => Branch(mapTree(l)(f), mapTree(r)(f))
+    }
+
+  def ex_3_28(): Unit = {
+    val testTree = Branch(Branch(Leaf(4), Leaf(2)), Leaf(3))
+    println(mapTree(testTree)((x) => "Converted %d".format(x)))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -407,7 +419,8 @@ object List {
     //ex_3_24()
     //ex_3_25()
     //ex_3_26()
-    ex_3_27()
+    //ex_3_27()
+    ex_3_28()
   }
 }
 
