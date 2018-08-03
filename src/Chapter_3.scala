@@ -393,6 +393,45 @@ object List {
     println(mapTree(testTree)((x) => "Converted %d".format(x)))
   }
 
+  // Exercise 3.29
+  /*  This implementation of fold works from the bottom up rather than the top down while also starting from the top,
+      similar to how foldRight evaluates from the right though the list traversal is from the left. A foldLeft-like
+      implementation might evaluate from the top down.
+   */
+  def fold[A,B](root: Tree[A], leafFunc: A => B)(branchFunc: (Tree[A], Tree[A]) => B): B =
+    root match {
+      case Leaf(x) => leafFunc(x)
+      case Branch(l, r) => branchFunc(l, r)
+    }
+
+  def size2(root: Tree[Int]): Int =
+    fold(root, (_: Int) => 1)((l,r) => size2(l) + size2(r) + 1)
+
+  def maximum2(root: Tree[Int]): Int =
+    fold(root, (x: Int) => x)((l,r) => maximum2(l).max(maximum2(r)))
+
+  def depth2[A](root: Tree[A]): Int =
+    fold(root, (_: A) => 1)((l,r) => 1 + depth2(l).max(depth2(r)))
+
+  def mapTree2[A,B](root: Tree[A])(f: A => B): Tree[B] =
+    fold(root, (x: A) => Leaf(f(x)): Tree[B])((l,r) => Branch(mapTree(l)(f), mapTree(r)(f)))
+
+  def ex_3_29(): Unit = {
+    val testTree = Branch(Branch(Leaf(4), Leaf(2)), Leaf(3))
+
+    println("Size:")
+    println(size2(testTree))
+
+    println("\nMaximum:")
+    println(maximum2(testTree))
+
+    println("\nDepth:")
+    println(depth2(testTree))
+
+    println("\nMap:")
+    println(mapTree2(testTree)(x => "str %d".format(x)))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -420,7 +459,8 @@ object List {
     //ex_3_25()
     //ex_3_26()
     //ex_3_27()
-    ex_3_28()
+    //ex_3_28()
+    ex_3_29()
   }
 }
 
