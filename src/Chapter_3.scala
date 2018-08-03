@@ -369,6 +369,18 @@ object List {
     println(maximum(testTree))
   }
 
+  // Exercise 3.27
+  def depth[A](root: Tree[A]): Int =
+    root match {
+      case Leaf(_) => 1
+      case Branch(x, y) => depth(x).max(depth(y)) + 1
+    }
+
+  def ex_3_27(): Unit = {
+    var testTree = Branch(Branch(Leaf(4), Leaf(2)), Leaf(3))
+    println(depth(testTree))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -394,7 +406,8 @@ object List {
     //ex_3_23()
     //ex_3_24()
     //ex_3_25()
-    ex_3_26()
+    //ex_3_26()
+    ex_3_27()
   }
 }
 
