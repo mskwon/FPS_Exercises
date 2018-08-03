@@ -1,8 +1,8 @@
-object Chapter_3 {
-  sealed trait List[+A]
-  case object Nil extends List[Nothing]
-  case class Cons[+A](head: A, tail: List[A]) extends List[A]
+sealed trait List[+A]
+case object Nil extends List[Nothing]
+case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
+object List {
   def sum(ints: List[Int]): Int = ints match {
     case Nil => 0
     case Cons(x, xs) => x + sum(xs)
@@ -357,6 +357,18 @@ object Chapter_3 {
     println(size(testTree))
   }
 
+  // Exercise 3.26
+  def maximum(root: Tree[Int]): Int =
+    root match {
+      case Leaf(x) => x
+      case Branch(x, y) => maximum(x).max(maximum(y))
+    }
+
+  def ex_3_26(): Unit = {
+    var testTree = Branch(Branch(Leaf(4), Leaf(2)), Leaf(3))
+    println(maximum(testTree))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_3_1()
     //ex_3_2()
@@ -381,7 +393,8 @@ object Chapter_3 {
     //ex_3_22()
     //ex_3_23()
     //ex_3_24()
-    ex_3_25()
+    //ex_3_25()
+    ex_3_26()
   }
 }
 
