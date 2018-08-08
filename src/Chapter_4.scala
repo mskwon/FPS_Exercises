@@ -73,13 +73,7 @@ object Chapter_4 {
 
   // Exercise 4.3
   def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
-    a match {
-      case None => None
-      case Some(x) => b match {
-        case None => None
-        case Some(y) => Some(f(x, y))
-      }
-    }
+    a.map(a_val => b.map(b_val => f(a_val, b_val))).getOrElse(None)
 
   def ex_4_3(): Unit = {
     println(map2(Some(1), Some("str %d"))((i,s) => s.format(i)))
