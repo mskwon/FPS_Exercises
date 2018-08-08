@@ -1,6 +1,7 @@
 case class Some[+A](val get: A) extends Option[A]
 case object None extends Option[Nothing]
 
+// Exercise 4.1
 sealed trait Option[+A] {
   def map[B](f: A => B): Option[B] =
     this match {
@@ -25,7 +26,6 @@ sealed trait Option[+A] {
   def filter(f: A => Boolean): Option[A] =
     if (map(f).getOrElse(false)) this
     else None
-
 }
 
 object Chapter_4 {
@@ -56,8 +56,24 @@ object Chapter_4 {
     println(testSome2.filter(x => x%2==0))
   }
 
+  // Exercise 4.2
+  def mean(ds: Seq[Double]): Option[Double] =
+    ds.length match {
+      case 0 => None
+      case _ => Some(ds.sum / ds.length)
+    }
+
+  def variance(xs: Seq[Double]): Option[Double] =
+    mean(xs).flatMap(m => mean(xs.map(x => math.pow(x - m,2))))
+
+  def ex_4_2(): Unit = {
+    val testSeq = Seq(1.0, 2.0, 3.0) // Expected variance: 2/3
+    println(variance(testSeq))
+  }
+
   def main(args: Array[String]): Unit = {
-    ex_4_1()
+    //ex_4_1()
+    ex_4_2()
   }
 }
 
