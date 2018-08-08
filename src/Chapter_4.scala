@@ -71,9 +71,26 @@ object Chapter_4 {
     println(variance(testSeq))
   }
 
+  // Exercise 4.3
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+    a match {
+      case None => None
+      case Some(x) => b match {
+        case None => None
+        case Some(y) => Some(f(x, y))
+      }
+    }
+
+  def ex_4_3(): Unit = {
+    println(map2(Some(1), Some("str %d"))((i,s) => s.format(i)))
+    println(map2(None, Some("str %d"))((i,s) => s.format(i)))
+    println(map2(Some(1), None)((i,s: String) => s.format(i)))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_4_1()
-    ex_4_2()
+    //ex_4_2()
+    ex_4_3()
   }
 }
 
