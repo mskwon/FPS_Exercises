@@ -81,10 +81,15 @@ object Chapter_4 {
     println(map2(Some(1), None)((i,s: String) => s.format(i)))
   }
 
+  // Exercise 4.4
+  //def sequence[A](a: List[Option[A]]): Option[List[A]] =
+
   def main(args: Array[String]): Unit = {
     //ex_4_1()
     //ex_4_2()
-    ex_4_3()
+    //ex_4_3()
+    val testList = List(1,2,3)
+    println(List[Int].foldRight(0)(_+_))
   }
 }
 
