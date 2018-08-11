@@ -169,13 +169,51 @@ object Chapter_4 {
     println(testRight.map2(testLeft)((x, y) => x+y))
   }
 
+  // Exercise 4.7
+  def sequence2[E, A](es: List[Either[E, A]]): Either[E, List[A]] =
+    es match  {
+      case Nil => Right(Nil)
+      case he :: te => he.map2(sequence2(te))((h, t) => h :: t)
+    }
+
+  def traverse2[E, A, B](as: List[A])(f: A => Either[E, B]): Either[E, List[B]] =
+    as match {
+      case Nil => Right(Nil)
+      case h :: t => f(h) match {
+        case Left(e) => Left(e): Either[E, List[B]]
+        case Right(v) => traverse2(t)(f).flatMap(l => Right(v :: l))
+      }
+    }
+
+  def ex_4_7(): Unit = {
+    val testList = List(Right(1), Right(2), Right(3))
+    val testList2 = List(Right(1), Left("One"), Left("Two"))
+    val testList3 = List(1, 2, 3)
+    val testList4 = List(1, 2, 4)
+
+    def testFunc(x: Int): Either[String, Int] =
+      if (x == 3) Left("Three is in the list")
+      else Right(x)
+
+    def testFunc2(x: Int): Either[String, Int] =
+      if (x >= 2) Left("Element present that is bigger than one")
+      else Right(x)
+
+    println(sequence2(testList))
+    println(sequence2(testList2))
+    println(traverse2(testList3)(testFunc))
+    println(traverse2(testList3)(testFunc2))
+    println(traverse2(testList4)(testFunc))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_4_1()
     //ex_4_2()
     //ex_4_3()
     //ex_4_4()
     //ex_4_5()
-    ex_4_6()
+    //ex_4_6()
+    ex_4_7()
   }
 }
 
