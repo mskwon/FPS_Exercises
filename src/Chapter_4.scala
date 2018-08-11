@@ -1,6 +1,9 @@
 case class Some[+A](val get: A) extends Option[A]
 case object None extends Option[Nothing]
 
+case class Left[+E](value: E) extends Either[E, Nothing]
+case class Right[+A](value: A) extends Either[Nothing, A]
+
 // Exercise 4.1
 sealed trait Option[+A] {
   def map[B](f: A => B): Option[B] =
@@ -27,6 +30,34 @@ sealed trait Option[+A] {
     if (map(f).getOrElse(false)) this
     else None
 }
+
+// Exercise 4.6
+sealed trait Either[+E, +A] {
+  def map[B](f: A => B): Either[E, B] = this match {
+    case Left(e) => Left(e): Either[E, B]
+    case Right(v) => Right(f(v))
+  }
+
+  def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] =
+    this.map(f) match {
+      case Left(e) => Left(e): Either[EE, B]
+      case Right(re) => re
+    }
+
+  def orElse[EE >: E, B >: A](b: => Either[EE, B]): Either[EE, B] = this match {
+    case Left(_) => b
+    case _ => this
+  }
+
+  def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] = this match {
+    case Left(e) => Left(e): Either[EE, C]
+    case Right(a_val) => b match {
+      case Left(f) => Left(f): Either[EE, C]
+      case Right(b_val) => Right(f(a_val, b_val))
+    }
+  }
+}
+
 
 object Chapter_4 {
   def ex_4_1(): Unit = {
@@ -111,12 +142,40 @@ object Chapter_4 {
     println(sequence2(testList2))
   }
 
+  // Exercise 4.6
+  def ex_4_6(): Unit = {
+    val testRight = Right(1): Either[String, Int]
+    val testRight2 = Right(2): Either[String, Int]
+    val testLeft = Left("Left value"): Either[String, Int]
+    def testFunction(v: Int): Either[String, Int] =
+      if (v==1) Left("This is a one")
+      else Right(2)
+
+    println("map:")
+    println(testRight.map(x => x + 1))
+    println(testLeft.map(x => x + 1))
+
+    println("\nflatMap:")
+    println(testRight.flatMap(x => testFunction(x)))
+    println(testRight2.flatMap(x => testFunction(x)))
+    println(testLeft.flatMap(x => testFunction(x)))
+
+    println("\norElse:")
+    println(testRight.orElse(Left("This is a left value!")))
+    println(testLeft.orElse(Left("This is a left value!")))
+
+    println("\nmap2:")
+    println(testRight.map2(testRight2)((x, y) => x+y))
+    println(testRight.map2(testLeft)((x, y) => x+y))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_4_1()
     //ex_4_2()
     //ex_4_3()
     //ex_4_4()
-    ex_4_5()
+    //ex_4_5()
+    ex_4_6()
   }
 }
 
