@@ -215,5 +215,17 @@ object Chapter_4 {
     //ex_4_6()
     ex_4_7()
   }
+
+  /* Exercise 4.8
+
+    It would make most sense the change the way that map2 works such that Left values are not simply passed up but
+    are added to a list of all of the Left values.
+
+    A possibility might be to implement a sort of Either which has a list on the Left side. The list on the Left side
+    could append any new exceptions then return this list at the completion of the function call. orElse would function
+    about the same because it only operates on a single Either value, but traverse and sequence would behave differently
+    in that they would not prematurely terminate on the encounter of the first Left value - rather iterating completely
+    through whatever List is fed in.
+   */
 }
 
