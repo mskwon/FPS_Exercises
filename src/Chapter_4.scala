@@ -82,14 +82,23 @@ object Chapter_4 {
   }
 
   // Exercise 4.4
-  //def sequence[A](a: List[Option[A]]): Option[List[A]] =
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = a match {
+    case Nil => Some(Nil)
+    case xo :: to => sequence(to).flatMap(t => xo.flatMap(x => Some(x :: t)))
+  }
+
+  def ex_4_4(): Unit = {
+    val testList = List(Some(0), Some(1), Some(2))
+    val testList2 = List(Some(1), None, Some(2))
+    println(sequence(testList))
+    println(sequence(testList2))
+  }
 
   def main(args: Array[String]): Unit = {
     //ex_4_1()
     //ex_4_2()
     //ex_4_3()
-    val testList = List(1,2,3)
-    println(testList.foldRight(0)(_+_))
+    ex_4_4()
   }
 }
 
