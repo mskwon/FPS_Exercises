@@ -94,11 +94,29 @@ object Chapter_4 {
     println(sequence(testList2))
   }
 
+  // Exercise 4.5
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = a match {
+    case Nil => Some(Nil)
+    case h :: t if f(h) == None => None
+    case h :: t => traverse(t)(f).flatMap(xs => f(h).flatMap(x => Some(x::xs)))
+  }
+
+  def sequence2[A](a: List[Option[A]]): Option[List[A]] =
+    traverse(a)((x: Option[A]) => x)
+
+  def ex_4_5(): Unit = {
+    val testList = List(Some(0), Some(1), Some(2))
+    val testList2 = List(Some(1), None, Some(2))
+    println(sequence2(testList))
+    println(sequence2(testList2))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_4_1()
     //ex_4_2()
     //ex_4_3()
-    ex_4_4()
+    //ex_4_4()
+    ex_4_5()
   }
 }
 
