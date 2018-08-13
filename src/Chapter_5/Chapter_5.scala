@@ -19,6 +19,13 @@ sealed trait Stream[+A] {
     case Cons(h, t) if n > 0 => Cons(h, () => t().take(n - 1))
     case _ => Stream[A]()
   }
+
+  // Exercise 5.3
+  def takeWhile(p: A => Boolean): Stream[A] = this match {
+    case Empty => Empty
+    case Cons(h, t) if p(h()) => Cons(h, () => t().takeWhile(p))
+    case _ => Stream[A]()
+  }
 }
 
 object Stream {
@@ -40,13 +47,24 @@ object Chapter_5{
     println(testStream.toList)
   }
 
+  // Exercise 5.2
   def ex_5_2(): Unit = {
     val testStream = Stream(1, 2, 3, 4, 5, 6)
     println(testStream.take(3).toList)
+    println(testStream.take(8).toList)
+  }
+
+  // Exercise 5.3
+  def ex_5_3(): Unit = {
+    val testStream = Stream(2, 4, 6)
+    val testStream2 = Stream(2, 4, 6, 1)
+    println(testStream.takeWhile((x: Int) => x%2==0).toList)
+    println(testStream2.takeWhile((x: Int) => x%2==0).toList)
   }
 
   def main(args: Array[String]): Unit = {
     //ex_5_1()
-    ex_5_2()
+    //ex_5_2()
+    ex_5_3()
   }
 }
