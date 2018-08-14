@@ -26,6 +26,16 @@ sealed trait Stream[+A] {
     case Cons(h, t) if p(h()) => Cons(h, () => t().takeWhile(p))
     case _ => Stream[A]()
   }
+
+  def foldRight[B](z: => B)(f: (A, => B) => B): B =
+    this match {
+      case Cons(h, t) => f(h(), t().foldRight(z)(f))
+      case _ => z
+    }
+
+  // Exercise 5.4
+  def forAll(p: A => Boolean): Boolean =
+    this.foldRight(true)((h, b) => p(h) && b)
 }
 
 object Stream {
@@ -62,9 +72,18 @@ object Chapter_5{
     println(testStream2.takeWhile((x: Int) => x%2==0).toList)
   }
 
+  // Exercise 5.4
+  def ex_5_4(): Unit = {
+    val testStream = Stream(1, 2, 3, 4, 5, 6, 7)
+    val testStream2 = Stream(1, 2)
+    println(testStream.forAll(x => {println("Running"); x < 3}))
+    println(testStream2.forAll(_ < 3))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
-    ex_5_3()
+    //ex_5_3()
+    ex_5_4()
   }
 }
