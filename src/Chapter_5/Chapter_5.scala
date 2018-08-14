@@ -36,6 +36,10 @@ sealed trait Stream[+A] {
   // Exercise 5.4
   def forAll(p: A => Boolean): Boolean =
     this.foldRight(true)((h, b) => p(h) && b)
+
+  // Exercise 5.5
+  def takeWhile2(p: A => Boolean): Stream[A] =
+    this.foldRight(Stream[A]())((h, acc) => if (p(h)) Cons(() => h, () => acc) else acc)
 }
 
 object Stream {
@@ -80,10 +84,19 @@ object Chapter_5{
     println(testStream2.forAll(_ < 3))
   }
 
+  // Exercise 5.5
+  def ex_5_5(): Unit = {
+    val testStream = Stream(1, 2, 3, 4, 5, 6, 7)
+    val testStream2 = Stream(1)
+    println(testStream.takeWhile2(x => x < 3).toList)
+    println(testStream2.takeWhile2(_ < 3).toList)
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
     //ex_5_3()
-    ex_5_4()
+    //ex_5_4()
+    ex_5_5()
   }
 }
