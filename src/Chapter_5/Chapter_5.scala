@@ -40,6 +40,10 @@ sealed trait Stream[+A] {
   // Exercise 5.5
   def takeWhile2(p: A => Boolean): Stream[A] =
     this.foldRight(Stream[A]())((h, acc) => if (p(h)) Cons(() => h, () => acc) else acc)
+
+  // Exercise 5.6
+  def headOption2: Option[A] =
+    this.foldRight(None: Option[A])((h, _) => Some(h))
 }
 
 object Stream {
@@ -92,11 +96,20 @@ object Chapter_5{
     println(testStream2.takeWhile2(_ < 3).toList)
   }
 
+  // Exercise 5.6
+  def ex_5_6(): Unit = {
+    val testStream = Stream(1, 2, 3)
+    val testStream2 = Stream()
+    println(testStream.headOption2)
+    println(testStream2.headOption2)
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
     //ex_5_3()
     //ex_5_4()
-    ex_5_5()
+    //ex_5_5()
+    ex_5_6()
   }
 }
