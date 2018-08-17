@@ -139,6 +139,14 @@ object Chapter_5{
     println(testStream.flatMap(testFunction).toList)
   }
 
+  // Exercise 5.8
+  def constant[A](a: A): Stream[A] =
+    Stream.cons(a, constant(a))
+
+  def ex_5_8(): Unit = {
+    println(constant(3).take(5).toList)
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
@@ -146,6 +154,7 @@ object Chapter_5{
     //ex_5_4()
     //ex_5_5()
     //ex_5_6()
-    ex_5_7()
+    //ex_5_7()
+    ex_5_8()
   }
 }
