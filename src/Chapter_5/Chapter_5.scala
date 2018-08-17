@@ -147,6 +147,14 @@ object Chapter_5{
     println(constant(3).take(5).toList)
   }
 
+  // Exercise 5.9
+  def from(n: Int): Stream[Int] =
+    Stream.cons(n, from(n+1))
+
+  def ex_5_9(): Unit = {
+    println(from(3).take(5).toList)
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
@@ -155,6 +163,7 @@ object Chapter_5{
     //ex_5_5()
     //ex_5_6()
     //ex_5_7()
-    ex_5_8()
+    //ex_5_8()
+    ex_5_9()
   }
 }
