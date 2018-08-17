@@ -44,6 +44,22 @@ sealed trait Stream[+A] {
   // Exercise 5.6
   def headOption2: Option[A] =
     this.foldRight(None: Option[A])((h, _) => Some(h))
+
+  // Exercise 5.7
+  def map[B](f: A => B): Stream[B] =
+    this.foldRight(Stream[B]())((h, t) => Cons(() => f(h), () => t))
+
+  def filter(f: A => Boolean): Stream[A] =
+    this.foldRight(Stream[A]())((h, t) =>
+      if (f(h)) Cons(() => h, () => t)
+      else t
+    )
+
+  def append[B>:A](s: => Stream[B]): Stream[B] =
+    this.foldRight(s)((h, t) => Cons(() => h, () => t))
+
+  def flatMap[B](f: A => Stream[B]): Stream[B] =
+    this.foldRight(Stream[B]())((h, acc) => f(h).append(acc))
 }
 
 object Stream {
@@ -104,12 +120,32 @@ object Chapter_5{
     println(testStream2.headOption2)
   }
 
+  // Exercise 5.7
+  def ex_5_7(): Unit = {
+    val testStream = Stream(1, 2, 3)
+    val testStream2 = Stream(4, 5, 6)
+
+    println("map:")
+    println(testStream.map(_ + 10).toList)
+
+    println("\nfilter:")
+    println(testStream.filter(_%2 == 0).toList)
+
+    println("\nappend:")
+    println(testStream.append(testStream2).toList)
+
+    println("\nflatMap:")
+    val testFunction = (x:Int) => Stream(10, 20, 30).map(_ + x)
+    println(testStream.flatMap(testFunction).toList)
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
     //ex_5_3()
     //ex_5_4()
     //ex_5_5()
-    ex_5_6()
+    //ex_5_6()
+    ex_5_7()
   }
 }
