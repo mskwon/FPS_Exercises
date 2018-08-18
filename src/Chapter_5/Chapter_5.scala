@@ -155,6 +155,13 @@ object Chapter_5{
     println(from(3).take(5).toList)
   }
 
+  // Exercise 5.10
+  def fibs(n_1: Int, n_2: Int): Stream[Int] =
+    Stream.cons(n_1, Stream.cons(n_2, fibs(n_1 + n_2, n_1 + 2*n_2)))
+
+  def ex_5_10(): Unit =
+    println(fibs(0,1).take(7).toList)
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
@@ -164,6 +171,7 @@ object Chapter_5{
     //ex_5_6()
     //ex_5_7()
     //ex_5_8()
-    ex_5_9()
+    //ex_5_9()
+    ex_5_10()
   }
 }
