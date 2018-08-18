@@ -162,6 +162,13 @@ object Chapter_5{
   def ex_5_10(): Unit =
     println(fibs(0,1).take(7).toList)
 
+  // Exercise 5.11
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
+    Stream.cons(f(z).get._1, unfold(f(z).get._2)(f))
+
+  def ex_5_11(): Unit =
+    println(unfold(1)(x => Some((x*2, x + 1))).take(5).toList)
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
@@ -172,6 +179,7 @@ object Chapter_5{
     //ex_5_7()
     //ex_5_8()
     //ex_5_9()
-    ex_5_10()
+    //ex_5_10()
+    ex_5_11()
   }
 }
