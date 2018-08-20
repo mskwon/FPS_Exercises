@@ -72,6 +72,9 @@ object Stream {
 
   def apply[A](as: A*): Stream[A] =
     if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
+
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
+    Stream.cons(f(z).get._1, unfold(f(z).get._2)(f))
 }
 
 object Chapter_5{
@@ -163,26 +166,23 @@ object Chapter_5{
     println(fibs(0,1).take(7).toList)
 
   // Exercise 5.11
-  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
-    Stream.cons(f(z).get._1, unfold(f(z).get._2)(f))
-
   def ex_5_11(): Unit =
-    println(unfold(1)(x => Some((x*2, x + 1))).take(5).toList)
+    println(Stream.unfold(1)(x => Some((x*2, x + 1))).take(5).toList)
 
   // Exercise 5.12
   def fibs2(): Stream[Int] =
-    unfold(0::1::Nil)((l: List[Int]) => l match {
+    Stream.unfold(0::1::Nil)((l: List[Int]) => l match {
       case x_0::x_1::Nil => Some(x_0, x_1::x_0 + x_1::Nil)
     })
 
   def from2(n: Int): Stream[Int] =
-    unfold(n)(x => Some(x, x+1))
+    Stream.unfold(n)(x => Some(x, x+1))
 
   def constant2(n: Int): Stream[Int] =
-    unfold(n)(x => Some(x, x))
+    Stream.unfold(n)(x => Some(x, x))
 
   def ones2(): Stream[Int] =
-    unfold(1)(x => Some(1, 1))
+    Stream.unfold(1)(x => Some(1, 1))
 
   def ex_5_12(): Unit = {
     println("fibs:")
@@ -197,6 +197,7 @@ object Chapter_5{
     println("\nones2:")
     println(ones2().take(5).toList)
   }
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
