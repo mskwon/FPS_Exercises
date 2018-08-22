@@ -60,6 +60,49 @@ sealed trait Stream[+A] {
 
   def flatMap[B](f: A => Stream[B]): Stream[B] =
     this.foldRight(Stream[B]())((h, acc) => f(h).append(acc))
+
+  // Exercise 5.13
+  def map2[B](f: A => B): Stream[B] =
+    Stream.unfold(this)(s => s match {
+      case Empty => None
+      case Cons(h, t) => Some((f(h()), t()))
+    })
+
+  def take2(n: Int): Stream[A] =
+    Stream.unfold((n, this))(s => s._2 match {
+      case Cons(h, t) if s._1 > 0 => Some((h(), (s._1 - 1, t())))
+      case _ => None
+    })
+
+  def takeWhile3(f: A => Boolean): Stream[A] =
+    Stream.unfold(this)(s => s match {
+      case Cons(h, t) if f(h()) => Some((h(), t()))
+      case _ => None
+    })
+
+  def zipWith[B >: A](s2: Stream[B])(f: (B, B) => B): Stream[B] =
+    Stream.unfold((this, s2))(s => s._1 match {
+      case Cons(h1, t1) =>  s._2 match {
+        case Cons(h2, t2) => Some((f(h1(), h2()), (t1(), t2())))
+        case _ => Some((h1(), (t1(), Empty)))
+      }
+      case Empty => s._2 match {
+        case Cons(h2, t2) => Some((h2(), (Empty, t2())))
+        case _ => None
+      }
+    })
+
+  def zipAll[B](s2: Stream[B]): Stream[(Option[A],Option[B])] =
+    Stream.unfold((this, s2))(s => s._1 match {
+      case Cons(h1, t1) => s._2 match {
+        case Cons(h2, t2) => Some(((Some(h1()), Some(h2())), (t1(), t2())))
+        case _ => Some(((Some(h1()), None), (t1(), Empty)))
+      }
+      case _ => s._2 match {
+        case Cons(h2, t2) => Some(((None, Some(h2())), (Empty, t2())))
+        case _ => None
+      }
+    })
 }
 
 object Stream {
@@ -73,8 +116,11 @@ object Stream {
   def apply[A](as: A*): Stream[A] =
     if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
 
-  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
-    Stream.cons(f(z).get._1, unfold(f(z).get._2)(f))
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = f(z) match
+  {
+    case None => Stream[A]()
+    case Some((v, s)) => Stream.cons(v, unfold(s)(f))
+  }
 }
 
 object Chapter_5{
@@ -198,6 +244,30 @@ object Chapter_5{
     println(ones2().take(5).toList)
   }
 
+  // Exercise 5.13
+  def ex_5_13(): Unit = {
+    val testStream = Stream(1, 2, 3)
+    val testStream2 = Stream(10, 10, 10)
+    val testStream3 = Stream(10, 10)
+
+    println("map:")
+    println(testStream.map2(x => x + 10).toList)
+
+    println("\ntake:")
+    println(testStream.take2(2).toList)
+
+    println("\ntakeWhile:")
+    println(testStream.takeWhile3(x => x < 3).toList)
+
+    println("\nzipWith:")
+    println(testStream.zipWith(testStream2)((x, y) => x + y).toList)
+    println(testStream.zipWith(testStream3)((x, y) => x + y).toList)
+
+    println("\nzipAll:")
+    println(testStream.zipAll(testStream2).toList)
+    println(testStream.zipAll(testStream3).toList)
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
@@ -210,6 +280,7 @@ object Chapter_5{
     //ex_5_9()
     //ex_5_10()
     //ex_5_11()
-    ex_5_12()
+    //ex_5_12()
+    ex_5_13()
   }
 }
