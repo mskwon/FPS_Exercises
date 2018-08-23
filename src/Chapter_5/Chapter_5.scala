@@ -107,6 +107,13 @@ sealed trait Stream[+A] {
   // Exercise 5.14
   def startsWith[A](s: Stream[A]): Boolean =
     this.zipAll(s).filter(oh => (oh._2 != None)).foldRight(true)((oh, acc) => (oh._1 == oh._2) && acc)
+
+  // Exercise 5.15
+  def tails: Stream[Stream[A]] =
+    Stream.unfold(this)(s => s match {
+      case Cons(h, t) => Some(s, t())
+      case Empty => None
+    })
 }
 
 object Stream {
@@ -284,6 +291,12 @@ object Chapter_5{
     println(testStream startsWith testStream4)
   }
 
+  // Exercise 5.15
+  def ex_5_15(): Unit = {
+    val testStream = Stream(1,2,3)
+    println(testStream.tails.toList.map(_.toList))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
@@ -298,6 +311,7 @@ object Chapter_5{
     //ex_5_11()
     //ex_5_12()
     //ex_5_13()
-    ex_5_14()
+    //ex_5_14()
+    ex_5_15()
   }
 }
