@@ -114,6 +114,15 @@ sealed trait Stream[+A] {
       case Cons(h, t) => Some(s, t())
       case Empty => None
     })
+
+  // Exercise 5.16
+  def scanRight[B>:A](z: B)(f: (B, B) => B): Stream[B] = this match {
+    case Empty => Stream(z)
+    case Cons(h, t) => {
+      lazy val t_val = t().scanRight(z)(f)
+      Cons(() => f(h(), t_val.headOption.get), () => t_val)
+    }
+  }
 }
 
 object Stream {
@@ -297,6 +306,16 @@ object Chapter_5{
     println(testStream.tails.toList.map(_.toList))
   }
 
+  // Exercise 5.16
+  def ex_5_16(): Unit = {
+    val testStream = Stream(1,2,3)
+    println(testStream.scanRight(0)(_ + _).toList)
+  }
+  /*  It is not possible to write scanRight using unfold because unfold cannot refer to intermediate values as the
+      output Stream is generated. It may be possible to generate the correct output using unfold however the time
+      complexity will not be O(N). It should be possible to implement scanRight using foldRight.
+   */
+
   def main(args: Array[String]): Unit = {
     //ex_5_1()
     //ex_5_2()
@@ -312,6 +331,7 @@ object Chapter_5{
     //ex_5_12()
     //ex_5_13()
     //ex_5_14()
-    ex_5_15()
+    //ex_5_15()
+    ex_5_16()
   }
 }
