@@ -81,9 +81,28 @@ object Chapter_6 {
     println(double3(rng))
   }
 
+  // Exercise 6.4
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    val (i, rng_1) = randomInt(rng)
+
+    if (count == 0) (Nil, rng)
+    else if (count == 1) (List(i), rng_1)
+    else {
+      val (t, rng_2) = ints(count - 1)(rng_1)
+      (i::t, rng_2)
+    }
+  }
+
+  def ex_6_4(): Unit = {
+    val rng = SimpleRNG(0)
+
+    println(ints(5)(rng))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_6_1()
     //ex_6_2()
-    ex_6_3()
+    //ex_6_3()
+    ex_6_4()
   }
 }
