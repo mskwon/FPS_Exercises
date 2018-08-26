@@ -51,8 +51,39 @@ object Chapter_6 {
     println(double(rng_3))
   }
 
+  // Exercise 6.3
+  def intDouble(rng: RNG): ((Int,Double), RNG) = {
+    val (i, rng_1) = randomInt(rng)
+    val (d, rng_2) = double(rng_1)
+
+    ((i, d), rng_2)
+  }
+
+  def doubleInt(rng: RNG): ((Double,Int), RNG) = {
+    val ((i, d), next_rng) = intDouble(rng)
+
+    ((d, i), next_rng)
+  }
+
+  def double3(rng: RNG): ((Double,Double,Double), RNG) = {
+    val (d1, rng_1) = double(rng)
+    val (d2, rng_2) = double(rng_1)
+    val (d3, rng_3) = double(rng_2)
+
+    ((d1, d2, d3), rng_3)
+  }
+
+  def ex_6_3(): Unit = {
+    val rng = SimpleRNG(0)
+
+    println(intDouble(rng))
+    println(doubleInt(rng))
+    println(double3(rng))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_6_1()
-    ex_6_2()
+    //ex_6_2()
+    ex_6_3()
   }
 }
