@@ -125,11 +125,28 @@ object Chapter_6 {
     println(double_2(rng))
   }
 
+  // Exercise 6.6
+  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = {
+    rng => {
+      val (a, rng_a) = ra(rng)
+      val (b, _) = rb(rng)
+
+      (f(a, b), rng_a)
+    }
+  }
+
+  def ex_6_6(): Unit = {
+    val rng = SimpleRNG(1)
+
+    println(map2(nonNegativeInt, double_2)((i, d) => (i, d))(rng))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_6_1()
     //ex_6_2()
     //ex_6_3()
     //ex_6_4()
-    ex_6_5()
+    //ex_6_5()
+    ex_6_6()
   }
 }
