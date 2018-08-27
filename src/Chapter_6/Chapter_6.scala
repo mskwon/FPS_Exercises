@@ -159,6 +159,25 @@ object Chapter_6 {
     println(ints2(5)(rng))
   }
 
+  // Exercise 6.8
+  def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] =
+    rng => {
+      val (a, rng2) = f(rng)
+      g(a)(rng2)
+    }
+
+  def nonNegativeLessThan(n: Int): Rand[Int] =
+    flatMap(nonNegativeInt)(i => rng => {
+      val mod = i % n
+      if (i + (n-1) - mod >= 0) (mod, rng)
+      else nonNegativeLessThan(n)(rng)
+    })
+
+  def ex_6_8(): Unit = {
+    val rng = SimpleRNG(1)
+    println(nonNegativeLessThan(100)(rng))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_6_1()
     //ex_6_2()
@@ -166,6 +185,7 @@ object Chapter_6 {
     //ex_6_4()
     //ex_6_5()
     //ex_6_6()
-    ex_6_7()
+    //ex_6_7()
+    ex_6_8()
   }
 }
