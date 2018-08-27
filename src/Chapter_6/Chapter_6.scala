@@ -141,12 +141,31 @@ object Chapter_6 {
     println(map2(nonNegativeInt, double_2)((i, d) => (i, d))(rng))
   }
 
+  // Exercise 6.7
+  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = fs match {
+    case h::t => rng => map2(h, sequence(t))((a, la) => a::la)(rng)
+    case Nil => rng => (List[A](), rng)
+  }
+
+  def ints2(n: Int): Rand[List[Int]] = {
+    val r_list: List[Rand[Int]] = List.fill(n)(nonNegativeInt)
+
+    sequence(r_list)
+  }
+
+  def ex_6_7(): Unit = {
+    val rng = SimpleRNG(1)
+
+    println(ints2(5)(rng))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_6_1()
     //ex_6_2()
     //ex_6_3()
     //ex_6_4()
     //ex_6_5()
-    ex_6_6()
+    //ex_6_6()
+    ex_6_7()
   }
 }
