@@ -129,9 +129,9 @@ object Chapter_6 {
   def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = {
     rng => {
       val (a, rng_a) = ra(rng)
-      val (b, _) = rb(rng)
+      val (b, rng_b) = rb(rng_a)
 
-      (f(a, b), rng_a)
+      (f(a, b), rng_b)
     }
   }
 
