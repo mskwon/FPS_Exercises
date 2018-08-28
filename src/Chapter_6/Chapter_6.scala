@@ -178,6 +178,23 @@ object Chapter_6 {
     println(nonNegativeLessThan(100)(rng))
   }
 
+  // Exercise 6.9
+  def map_fm[A,B](s: Rand[A])(f: A => B): Rand[B] =
+    flatMap(s)(a => rng => (f(a), rng))
+
+  def map2_fm[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] =
+    flatMap(ra)(a => rng =>
+      flatMap(rb)(b => rng2 =>
+        (f(a,b), rng2))(rng)
+      )
+
+  def ex_6_9(): Unit = {
+    val rng = SimpleRNG(1)
+
+    println(map_fm(nonNegativeInt)(i => "str %d".format(i))(rng))
+    println(map2_fm(nonNegativeInt, double)((i, d) => "str %d %f".format(i, d))(rng))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_6_1()
     //ex_6_2()
@@ -186,6 +203,7 @@ object Chapter_6 {
     //ex_6_5()
     //ex_6_6()
     //ex_6_7()
-    ex_6_8()
+    //ex_6_8()
+    ex_6_9()
   }
 }
