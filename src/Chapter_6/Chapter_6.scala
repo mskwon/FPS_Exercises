@@ -18,6 +18,48 @@ case class SimpleRNG(seed: Long) extends RNG {
     rng => (a, rng)
 }
 
+case class State[S, +A](run: S => (A, S)){
+  //type State[S, +A] = S => (A,S)
+
+  // Exercise 6.10
+  def unit[B>:A](a: B): State[S, B] =
+    State[S, B](s => (a, s))
+
+  def map[B](f: A => B): State[S, B] = {
+    State[S, B](s => {
+      val (a, ns) = this.run(s)
+      (f(a), ns)
+    })
+  }
+
+  def map2[B, C](s2: State[S, B])(f: (A, B) => C): State[S, C] = {
+    State[S, C](s => {
+      val (a, ns1) = this.run(s)
+      val (b, ns2) = s2.run(ns1)
+
+      (f(a, b), ns2)
+    })
+  }
+
+  def flatMap[B](f: A => State[S, B]): State[S, B] =
+    State[S, B](s => {
+      val (a, ns) = this.run(s)
+      f(a).run(ns)
+    })
+}
+
+object State {
+  def sequence[S, A](l: List[State[S, A]]): State[S, List[A]] = l match {
+    case h::t => State[S, List[A]]( s => {
+      val (hv, hs) = h.run(s)
+      val (tv, ts) = sequence(t).run(hs)
+
+      (hv::tv, ts)
+    })
+    case Nil => State[S, List[A]]( s => (Nil, s))
+  }
+}
+
 object Chapter_6 {
   // Exercise 6.1
   def nonNegativeInt(rng: RNG): (Int, RNG) = {
@@ -195,6 +237,32 @@ object Chapter_6 {
     println(map2_fm(nonNegativeInt, double)((i, d) => "str %d %f".format(i, d))(rng))
   }
 
+  // Exercise 6.10
+  //unit , map , map2 , flatMap , and sequence
+  def ex_6_10(): Unit = {
+    val testState = State[Int, Int](i => (-i, i+1))
+    val testState2 = State[Int, String](i => ("test %d".format(i), i+10))
+
+    val testState3 = State[Int, Int](i => (i*2, i+1))
+    val testState4 = State[Int, Int](i => (i+10, i+1))
+    val testState5 = State[Int, Int](i => (i+20, i+1))
+
+    val testList = List(testState, testState3, testState4, testState5)
+
+    def notValue(v: Int): State[Int, String] = {
+      testState.flatMap(i =>
+        if (i == v) notValue(v)
+        else testState2
+      )
+    }
+
+    println(testState.unit(5).run(1))
+    println(testState.map(i => "str %d".format(i)).run(1))
+    println(testState.map2(testState2)((i, s) => (s + " %d".format(i))).run(1))
+    println(notValue(-1).run(1))
+    println(State.sequence(testList).run(1))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_6_1()
     //ex_6_2()
@@ -204,6 +272,7 @@ object Chapter_6 {
     //ex_6_6()
     //ex_6_7()
     //ex_6_8()
-    ex_6_9()
+    //ex_6_9()
+    ex_6_10()
   }
 }
