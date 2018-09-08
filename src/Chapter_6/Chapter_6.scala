@@ -46,6 +46,10 @@ case class State[S, +A](run: S => (A, S)){
       val (a, ns) = this.run(s)
       f(a).run(ns)
     })
+
+  def get: State[S, S] = State(s => (s, s))
+
+  def set(s: S): State[S, Unit] = State(_ => ((), s))
 }
 
 object State {
@@ -263,6 +267,42 @@ object Chapter_6 {
     println(State.sequence(testList).run(1))
   }
 
+  // Exercise 6.11
+  sealed trait Input
+  case object Coin extends Input
+  case object Turn extends Input
+
+  case class Machine(locked: Boolean, candies: Int, coins: Int){
+    def insertCoin(): Machine = {
+      if(this.candies <= 0 || this.locked == false) this
+      else Machine(false, this.candies, this.coins + 1)
+    }
+
+    def turnHandle(): Machine = {
+      if(this.candies <= 0 || this.locked == true) this
+      else Machine(true, this.candies - 1, this.coins)
+    }
+
+    def takeInput(i: Input): Machine = {
+      if(i == Coin) insertCoin()
+      else if (i == Turn) turnHandle()
+      else this
+    }
+  }
+
+  def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = inputs match {
+    case h::t => State[Machine, (Int, Int)] (m => simulateMachine(t).run(m.takeInput(h)))
+    case Nil => State[Machine, (Int, Int)] (m => ((m.coins, m.candies), m))
+  }
+
+  // Exercise 6.11
+  def ex_6_11(): Unit = {
+    val testMachine = Machine(true, 5, 10)
+    val testInputs = List(Coin, Turn, Coin, Turn, Coin, Turn, Coin, Turn)
+
+    println(simulateMachine(testInputs).run(testMachine))
+  }
+
   def main(args: Array[String]): Unit = {
     //ex_6_1()
     //ex_6_2()
@@ -273,6 +313,7 @@ object Chapter_6 {
     //ex_6_7()
     //ex_6_8()
     //ex_6_9()
-    ex_6_10()
+    //ex_6_10()
+    ex_6_11()
   }
 }
